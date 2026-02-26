@@ -1,0 +1,39 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+model Author {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(200)
+  email     String   @unique @db.VarChar(200)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  news      News[]
+}
+
+model News {
+  id        Int      @id @default(autoincrement())
+
+  slug      String   @unique @db.VarChar(200)
+
+  title     String   @db.VarChar(200)
+  summary   String   @db.VarChar(400)
+  content   String   @db.Text
+
+  published Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authorId  Int
+  author    Author   @relation(fields: [authorId], references: [id], onDelete: Restrict)
+
+  @@index([createdAt])
+}
