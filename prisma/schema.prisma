@@ -5,8 +5,10 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
+
 model Author {
   id        Int      @id @default(autoincrement())
   name      String   @db.VarChar(200)
